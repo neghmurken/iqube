@@ -1,5 +1,6 @@
 {
   "background_color": "#a0cbd9",
   "face_color": "#f5d25f",
-  "grid_color": "#1c508c"
+  "grid_color": "#1c508c",
+  "hover_color": "#f7ac4f"
 }

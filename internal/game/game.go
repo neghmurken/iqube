@@ -22,7 +22,7 @@ func New() *Game {
 }
 
 func (g *Game) Update() {
-	g.renderer.Update()
+	g.renderer.Update(g.cube)
 }
 
 func (g *Game) Draw() {

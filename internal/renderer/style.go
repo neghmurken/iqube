@@ -14,10 +14,16 @@ type Style struct {
 	BackgroundColor rl.Color
 	FaceColor       rl.Color
 	GridColor       rl.Color
+	HoverColor      rl.Color
 }
 
 func DefaultStyle() Style {
-	return Style{BackgroundColor: rl.Black, FaceColor: rl.White, GridColor: rl.DarkGray}
+	return Style{
+		BackgroundColor: rl.Black,
+		FaceColor:       rl.White,
+		GridColor:       rl.DarkGray,
+		HoverColor:      rl.Orange,
+	}
 }
 
 func LoadStyle(path string) (Style, error) {
@@ -30,6 +36,7 @@ func LoadStyle(path string) (Style, error) {
 		BackgroundColor string `json:"background_color"`
 		FaceColor       string `json:"face_color"`
 		GridColor       string `json:"grid_color"`
+		HoverColor      string `json:"hover_color"`
 	}
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return Style{}, fmt.Errorf("LoadStyle: %w", err)
@@ -47,8 +54,12 @@ func LoadStyle(path string) (Style, error) {
 	if err != nil {
 		return Style{}, fmt.Errorf("LoadStyle grid_color: %w", err)
 	}
+	hc, err := parseHexColor(raw.HoverColor)
+	if err != nil {
+		return Style{}, fmt.Errorf("LoadStyle hover_color: %w", err)
+	}
 
-	return Style{BackgroundColor: bg, FaceColor: fc, GridColor: gc}, nil
+	return Style{BackgroundColor: bg, FaceColor: fc, GridColor: gc, HoverColor: hc}, nil
 }
 
 func parseHexColor(s string) (rl.Color, error) {

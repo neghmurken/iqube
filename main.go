@@ -12,10 +12,11 @@ const (
 )
 
 func main() {
+	rl.SetConfigFlags(rl.FlagMsaa4xHint)
 	rl.InitWindow(screenWidth, screenHeight, "iQube")
 	defer rl.CloseWindow()
 
-	rl.SetTargetFPS(60)
+	rl.SetTargetFPS(120)
 
 	g := game.New()
 
