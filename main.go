@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	screenWidth  = 800
-	screenHeight = 600
+	screenWidth  = 1024
+	screenHeight = 768
 )
 
 func main() {
@@ -23,7 +23,6 @@ func main() {
 		g.Update()
 
 		rl.BeginDrawing()
-		rl.ClearBackground(rl.Black)
 		g.Draw()
 		rl.EndDrawing()
 	}

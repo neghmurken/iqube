@@ -1,15 +1,30 @@
 package game
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	"github.com/neghmurken/iqube/internal/model"
+	"github.com/neghmurken/iqube/internal/renderer"
+)
 
-type Game struct{}
-
-func New() *Game {
-	return &Game{}
+type Game struct {
+	cube     *model.Cube
+	renderer *renderer.Renderer
 }
 
-func (g *Game) Update() {}
+func New() *Game {
+	style, err := renderer.LoadStyle("assets/theme.json")
+	if err != nil {
+		style = renderer.DefaultStyle()
+	}
+	return &Game{
+		cube:     model.NewCube(4),
+		renderer: renderer.New(style),
+	}
+}
+
+func (g *Game) Update() {
+	g.renderer.Update()
+}
 
 func (g *Game) Draw() {
-	rl.DrawText("iQube", 10, 10, 20, rl.White)
+	g.renderer.Draw(g.cube)
 }
