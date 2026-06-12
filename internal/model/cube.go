@@ -1,15 +1,24 @@
 package model
 
 const (
-	FacePosX = 0
-	FaceNegX = 1
-	FacePosY = 2
-	FaceNegY = 3
-	FacePosZ = 4
-	FaceNegZ = 5
+	RG = 0
+	LF = 1
+	UP = 2
+	BT = 3
+	FR = 4
+	BK = 5
 )
 
-type Cell struct{}
+type CellKind int
+
+const (
+	CellEmpty CellKind = iota
+	CellFilled
+)
+
+type Cell struct {
+	Kind CellKind
+}
 
 type Cube struct {
 	GridSize int

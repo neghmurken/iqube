@@ -19,6 +19,7 @@ func main() {
 	rl.SetTargetFPS(120)
 
 	g := game.New()
+	defer g.Close()
 
 	for !rl.WindowShouldClose() {
 		g.Update()

@@ -11,18 +11,30 @@ import (
 )
 
 type Style struct {
-	BackgroundColor rl.Color
-	FaceColor       rl.Color
-	GridColor       rl.Color
-	HoverColor      rl.Color
+	Colors           map[string]rl.Color
+	MarkerSpritePath string
+	FontPath         string
+	FontSize         int32
+}
+
+func (s Style) GetColor(name string) rl.Color {
+	return s.Colors[name]
 }
 
 func DefaultStyle() Style {
 	return Style{
-		BackgroundColor: rl.Black,
-		FaceColor:       rl.White,
-		GridColor:       rl.DarkGray,
-		HoverColor:      rl.Orange,
+		Colors: map[string]rl.Color{
+			"background": rl.Black,
+			"face":       rl.White,
+			"grid":       rl.DarkGray,
+			"hover":      rl.Orange,
+			"filled":     rl.NewColor(60, 60, 60, 255),
+			"start":      rl.NewColor(80, 200, 80, 200),
+			"goal":       rl.NewColor(255, 215, 0, 220),
+			"pawn":       rl.Blue,
+		},
+		MarkerSpritePath: "assets/markers.png",
+		FontSize:         20,
 	}
 }
 
@@ -33,33 +45,45 @@ func LoadStyle(path string) (Style, error) {
 	}
 
 	var raw struct {
-		BackgroundColor string `json:"background_color"`
-		FaceColor       string `json:"face_color"`
-		GridColor       string `json:"grid_color"`
-		HoverColor      string `json:"hover_color"`
+		Colors       map[string]string `json:"colors"`
+		MarkerSprite string            `json:"marker_sprite"`
+		Font         string            `json:"font"`
+		FontSize     int               `json:"font_size"`
 	}
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return Style{}, fmt.Errorf("LoadStyle: %w", err)
 	}
 
-	bg, err := parseHexColor(raw.BackgroundColor)
-	if err != nil {
-		return Style{}, fmt.Errorf("LoadStyle background_color: %w", err)
+	def := DefaultStyle()
+
+	colors := make(map[string]rl.Color, len(def.Colors))
+	for k, v := range def.Colors {
+		colors[k] = v
 	}
-	fc, err := parseHexColor(raw.FaceColor)
-	if err != nil {
-		return Style{}, fmt.Errorf("LoadStyle face_color: %w", err)
-	}
-	gc, err := parseHexColor(raw.GridColor)
-	if err != nil {
-		return Style{}, fmt.Errorf("LoadStyle grid_color: %w", err)
-	}
-	hc, err := parseHexColor(raw.HoverColor)
-	if err != nil {
-		return Style{}, fmt.Errorf("LoadStyle hover_color: %w", err)
+	for k, hex := range raw.Colors {
+		c, err := parseHexColor(hex)
+		if err != nil {
+			return Style{}, fmt.Errorf("LoadStyle colors.%s: %w", k, err)
+		}
+		colors[k] = c
 	}
 
-	return Style{BackgroundColor: bg, FaceColor: fc, GridColor: gc, HoverColor: hc}, nil
+	markerSprite := def.MarkerSpritePath
+	if raw.MarkerSprite != "" {
+		markerSprite = raw.MarkerSprite
+	}
+
+	fontSize := def.FontSize
+	if raw.FontSize > 0 {
+		fontSize = int32(raw.FontSize)
+	}
+
+	return Style{
+		Colors:           colors,
+		MarkerSpritePath: markerSprite,
+		FontPath:         raw.Font,
+		FontSize:         fontSize,
+	}, nil
 }
 
 func parseHexColor(s string) (rl.Color, error) {

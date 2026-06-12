@@ -1,6 +1,14 @@
 {
-  "background_color": "#a0cbd9",
-  "face_color": "#f5d25f",
-  "grid_color": "#1c508c",
-  "hover_color": "#f7ac4f"
+  "colors": {
+    "background": "#a0cbd9",
+    "face":       "#f5d25f",
+    "grid":       "#1c508c",
+    "hover":      "#f7ac4f",
+    "filled":     "#3c3c3c",
+    "start":      "#50c850c8",
+    "goal":       "#ffd700dc",
+    "pawn":       "#0000ffff"
+  },
+  "font":      "assets/ElmsSans-Regular.ttf",
+  "font_size": 20
 }
