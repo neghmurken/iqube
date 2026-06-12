@@ -3,10 +3,10 @@ package game
 import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 
-	"github.com/neghmurken/iqube/internal/level"
-	"github.com/neghmurken/iqube/internal/model"
-	"github.com/neghmurken/iqube/internal/renderer"
-	"github.com/neghmurken/iqube/internal/simulation"
+	"github.com/neghmurken/iqube/src/level"
+	"github.com/neghmurken/iqube/src/model"
+	"github.com/neghmurken/iqube/src/renderer"
+	"github.com/neghmurken/iqube/src/simulation"
 )
 
 type Game struct {

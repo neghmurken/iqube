@@ -3,7 +3,7 @@ package renderer
 import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 
-	"github.com/neghmurken/iqube/internal/model"
+	"github.com/neghmurken/iqube/src/model"
 )
 
 func (r *Renderer) drawCubeGrid(cube *model.Cube, cameraPos rl.Vector3, ds State) {
@@ -50,7 +50,7 @@ func (r *Renderer) drawCubeGrid(cube *model.Cube, cameraPos rl.Vector3, ds State
 
 	for i := range count {
 		if frontIdx[i] == ds.Pawn.Position.Face || frontIdx[i] == ds.PawnPrev.Position.Face {
-			r.drawPawn(ds)
+			r.drawPawn(ds, r.style.GetColor("pawn"))
 			break
 		}
 	}

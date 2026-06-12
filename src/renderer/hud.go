@@ -5,7 +5,7 @@ import (
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 
-	"github.com/neghmurken/iqube/internal/model"
+	"github.com/neghmurken/iqube/src/model"
 )
 
 func (r *Renderer) drawHUD(ds State) {

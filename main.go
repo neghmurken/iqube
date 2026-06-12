@@ -3,7 +3,7 @@ package main
 import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 
-	"github.com/neghmurken/iqube/internal/game"
+	"github.com/neghmurken/iqube/src/game"
 )
 
 const (

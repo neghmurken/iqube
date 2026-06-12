@@ -12,8 +12,9 @@ const (
 type CellKind int
 
 const (
-	CellEmpty CellKind = iota
-	CellFilled
+	CellNormal  CellKind = iota
+	CellVoid             // pawn cannot pass; simulation stops, back to placement
+	CellBlocked          // pawn cannot pass; stays on previous cell, simulation continues
 )
 
 type Cell struct {

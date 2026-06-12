@@ -1,11 +1,9 @@
 package renderer
 
 import (
-	"math"
-
 	rl "github.com/gen2brain/raylib-go/raylib"
 
-	"github.com/neghmurken/iqube/internal/model"
+	"github.com/neghmurken/iqube/src/model"
 )
 
 func (r *Renderer) cellColor(pos model.Position, cube *model.Cube, ds State) (rl.Color, bool) {
@@ -15,7 +13,10 @@ func (r *Renderer) cellColor(pos model.Position, cube *model.Cube, ds State) (rl
 	if ds.Start.Equal(pos) {
 		return r.style.GetColor("start"), true
 	}
-	if cube.Faces[pos.Face][pos.Row][pos.Col].Kind == model.CellFilled {
+	switch cube.Faces[pos.Face][pos.Row][pos.Col].Kind {
+	case model.CellVoid:
+		return r.style.GetColor("void"), true
+	case model.CellBlocked:
 		return r.style.GetColor("filled"), true
 	}
 	return rl.Color{}, false
@@ -32,7 +33,7 @@ func (r *Renderer) cellWorldCenter(pos model.Position) rl.Vector3 {
 	)
 }
 
-func (r *Renderer) drawPawn(ds State) {
+func (r *Renderer) drawPawn(ds State, color rl.Color) {
 	from3D := r.cellWorldCenter(ds.PawnPrev.Position)
 	to3D := r.cellWorldCenter(ds.Pawn.Position)
 	t := ds.PawnAnimT
@@ -45,9 +46,20 @@ func (r *Renderer) drawPawn(ds State) {
 		pos = rl.Vector3Lerp(from3D, to3D, t)
 		normal = fn1
 	} else {
-		mid := rl.Vector3Lerp(from3D, to3D, 0.5)
-		m := max(max(float32(math.Abs(float64(mid.X))), float32(math.Abs(float64(mid.Y)))), float32(math.Abs(float64(mid.Z))))
-		edge := rl.NewVector3(mid.X/m, mid.Y/m, mid.Z/m)
+		pick := func(n0, n1, p float32) float32 {
+			if n0 != 0 {
+				return n0
+			}
+			if n1 != 0 {
+				return n1
+			}
+			return p
+		}
+		edge := rl.NewVector3(
+			pick(fn0.X, fn1.X, from3D.X),
+			pick(fn0.Y, fn1.Y, from3D.Y),
+			pick(fn0.Z, fn1.Z, from3D.Z),
+		)
 		if t < 0.5 {
 			pos = rl.Vector3Lerp(from3D, edge, t*2)
 		} else {
@@ -65,7 +77,7 @@ func (r *Renderer) drawPawn(ds State) {
 	radius := rl.Vector3Length(f.du) * 0.2
 	off := radius + lineOffset
 	p := rl.NewVector3(pos.X+normal.X*off, pos.Y+normal.Y*off, pos.Z+normal.Z*off)
-	rl.DrawSphere(p, radius, r.style.GetColor("pawn"))
+	rl.DrawSphere(p, radius, color)
 }
 
 func (r *Renderer) drawMarker(f faceDesc, row, col int, kind model.MarkerKind) {

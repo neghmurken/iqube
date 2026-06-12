@@ -5,7 +5,7 @@ import (
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 
-	"github.com/neghmurken/iqube/internal/model"
+	"github.com/neghmurken/iqube/src/model"
 )
 
 type HoveredCell struct {
@@ -79,7 +79,7 @@ func (r *Renderer) Update(cube *model.Cube, ds State) {
 	h := r.hitTest(cube)
 	if h.Valid {
 		pos := model.Position{Face: h.FaceIdx, Row: h.Row, Col: h.Col}
-		if ds.Start.Equal(pos) || ds.Goal.Equal(pos) || cube.Faces[pos.Face][pos.Row][pos.Col].Kind == model.CellFilled {
+		if ds.Start.Equal(pos) || ds.Goal.Equal(pos) || cube.Faces[pos.Face][pos.Row][pos.Col].Kind != model.CellNormal {
 			h = HoveredCell{}
 		}
 	}

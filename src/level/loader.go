@@ -8,7 +8,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/neghmurken/iqube/internal/model"
+	"github.com/neghmurken/iqube/src/model"
 )
 
 var faceNames = map[string]int{
@@ -132,9 +132,14 @@ func loadFile(path string) (model.Level, error) {
 		if err != nil {
 			return model.Level{}, fmt.Errorf("cell.face: %w", err)
 		}
-		kind := model.CellEmpty
-		if c.Kind == "filled" {
-			kind = model.CellFilled
+		var kind model.CellKind
+		switch c.Kind {
+		case "void":
+			kind = model.CellVoid
+		case "blocked":
+			kind = model.CellBlocked
+		default:
+			kind = model.CellNormal
 		}
 		for _, row := range c.Row.indices(n) {
 			for _, col := range c.Col.indices(n) {

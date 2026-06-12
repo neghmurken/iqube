@@ -4,6 +4,7 @@
     "face":       "#f5d25f",
     "grid":       "#1c508c",
     "hover":      "#f7ac4f",
+    "void":       "#8b0000",
     "filled":     "#3c3c3c",
     "start":      "#50c850c8",
     "goal":       "#ffd700dc",

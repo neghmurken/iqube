@@ -28,6 +28,7 @@ func DefaultStyle() Style {
 			"face":       rl.White,
 			"grid":       rl.DarkGray,
 			"hover":      rl.Orange,
+			"void":       rl.NewColor(139, 0, 0, 255),
 			"filled":     rl.NewColor(60, 60, 60, 255),
 			"start":      rl.NewColor(80, 200, 80, 200),
 			"goal":       rl.NewColor(255, 215, 0, 220),

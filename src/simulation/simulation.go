@@ -1,7 +1,7 @@
 package simulation
 
 import (
-	"github.com/neghmurken/iqube/internal/model"
+	"github.com/neghmurken/iqube/src/model"
 )
 
 type State int
@@ -107,12 +107,21 @@ func (s *Simulation) Update(dt float64) {
 
 func (s *Simulation) step() {
 	s.prevPawn = s.pawn
+
+	if s.cube.Faces[s.pawn.Position.Face][s.pawn.Position.Row][s.pawn.Position.Col].Kind == model.CellVoid {
+		s.resetPawn()
+		s.state = StatePlacement
+		return
+	}
+
 	next := s.advance(s.pawn)
 
 	cell := s.cube.Faces[next.Position.Face][next.Position.Row][next.Position.Col]
-	if cell.Kind == model.CellFilled {
-		s.resetPawn()
-		s.state = StatePlacement
+	switch cell.Kind {
+	case model.CellVoid:
+		s.pawn = next
+		return
+	case model.CellBlocked:
 		return
 	}
 

@@ -8,7 +8,13 @@ iQube is a puzzle game played on a 3D cube. Each face of the cube is divided int
 
 The cube has 6 faces: Front, Back, Left, Right, Top, Bottom. Each face is an n×n grid of cells.
 
-Cells are either **empty** (the pawn can cross them) or **filled** (impassable).
+Cells have one of three kinds:
+
+| Kind | Color | Effect |
+|------|-------|--------|
+| **Normal** | face color | Pawn can cross freely. |
+| **Void** | dark red | Impassable. Pawn steps onto it, then the simulation stops and placement resumes. The pawn returns to the start cell; placed markers are preserved. |
+| **Blocked** | dark gray | Impassable. Pawn stays on the previous cell and retries every tick. Simulation keeps running. Movement resumes if the cell kind changes. |
 
 ## The Pawn
 
@@ -38,7 +44,7 @@ Markers persist across the simulation: the pawn does not consume a marker when i
 
 Only one marker can occupy a cell at a time.
 
-Markers cannot be placed on the start cell, the goal cell, or filled cells.
+Markers cannot be placed on the start cell, the goal cell, or non-normal cells (void or blocked).
 
 ## Placement Phase
 
@@ -56,9 +62,10 @@ Once the player starts the simulation, the pawn begins moving. Markers can no lo
 
 Each step:
 1. The pawn moves one cell in its current direction.
-2. If the destination cell is **filled**, the pawn is blocked: the simulation stops immediately and placement resumes. The pawn returns to the start cell; placed markers are preserved.
-3. If the destination cell is the **goal**, the level is won.
-4. If the destination cell has a **marker**, the pawn's direction changes according to the marker's instruction. The change takes effect on the next step.
+2. If the destination cell is **void**, the pawn enters it (the move is animated), then the simulation stops and placement resumes. The pawn returns to the start cell; placed markers are preserved.
+3. If the destination cell is **blocked**, the pawn stays on the previous cell and retries on the next tick. Simulation continues.
+4. If the destination cell is the **goal**, the level is won.
+5. If the destination cell has a **marker**, the pawn's direction changes according to the marker's instruction. The change takes effect on the next step.
 
 When crossing a face edge, the pawn's direction may also change to remain consistent with the cube's geometry.
 
@@ -74,4 +81,4 @@ Levels are played in sequence. After the last level, the sequence loops back to 
 
 There is no explicit failure state. If the pawn is blocked or the player stops the simulation, placement resumes and the configuration can be adjusted. The player can iterate freely until the level is solved.
 
-Note: the game does not currently detect infinite loops. If the pawn loops indefinitely without reaching the goal or a filled cell, the simulation runs forever until the player stops it manually.
+Note: the game does not currently detect infinite loops. If the pawn loops indefinitely without reaching the goal or a void cell, the simulation runs forever until the player stops it manually.
