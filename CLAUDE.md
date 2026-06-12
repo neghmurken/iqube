@@ -51,35 +51,7 @@ Cube has 6 faces:
 
 Each face: n*n cell grid. Origin = bottom-left cell. Cell named `{FaceName}({col},{row})`. Example: `BT(4,2)`
 
-### Rendering pipeline
-
-1. `game.Draw()` → `renderer.Draw(cube)`
-2. `ClearBackground` with `style.BackgroundColor`
-3. `BeginMode3D` (perspective camera, orbit around origin)
-4. Pass 1 — front-facing faces only (`normal · cameraPos > 0`): fill each face with 2 triangles (`style.FaceColor`)
-5. Pass 2 — same faces: draw N+1 grid lines per axis, offset by `normal × lineOffset` to avoid z-fighting (`style.GridColor`)
-
-### Camera
-
-Spherical coords `(radius, azimuth, altitude)`, synced to `rl.Camera3D.Position` each frame.
-- Right-drag → azimuth / altitude
-- Scroll wheel → radius, clamped to `[minRadius, maxRadius]`
-
 ## Commands
 
 - `make build` build the app
 - `make run` build and run the app
-
-## Agent skills
-
-### Issue tracker
-
-Issues in GitHub Issues (`gh` CLI). See `docs/agents/issue-tracker.md`.
-
-### Triage labels
-
-Default canonical label strings — no custom overrides. See `docs/agents/triage-labels.md`.
-
-### Domain docs
-
-Single-context repo: one `CONTEXT.md` + `docs/adr/` at root. See `docs/agents/domain.md`.
